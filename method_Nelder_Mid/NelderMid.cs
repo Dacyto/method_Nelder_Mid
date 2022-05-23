@@ -9,12 +9,12 @@ namespace method_Nelder_Mid
 
 
         const int Dimension = 2;
-        double[,] Nelder_Mid = new double[Dimension, Dimension + 1];
+        double[,] Nelder_Mid = new double[Dimension, Dimension + 1]; 
         double[] Vector = new double[Dimension + 1];
 
 
 
-        private double Function(double[] X, int NP)
+        private double Function(double[] X, int NP)  //функция Розенброка
         {
             double x1 = X[0];
             double p = 1.0 - x1;
@@ -22,7 +22,7 @@ namespace method_Nelder_Mid
             return p * p + 100.0 * p2 * p2;
         }
 
-        private void makeSimplex(double[] X, double L, int NP, bool first)
+        private void makeSimplex(double[] X, double L, int NP, bool first)  //создание симплекса из точки Х
         {
             double qn, q2, r1, r2;
             int i, j;
@@ -46,7 +46,7 @@ namespace method_Nelder_Mid
                 for (i = 0; i < NP + 1; i++) Console.WriteLine(Vector[i]);
             }
         }
-        private double[] masscenter(int k, int NP)
+        private double[] masscenter(int k, int NP)  
         {
             int i, j;
             double s;
@@ -65,7 +65,7 @@ namespace method_Nelder_Mid
             double[] xc = masscenter(k, NP);
             for (int i = 0; i < NP; i++) Nelder_Mid[i, k] = (1.0 + cR) * xc[i] - Nelder_Mid[i, k];
         }
-        private void reduction(int k, double gamma, int NP)
+        private void reduction(int k, double gamma, int NP)   // Редукция симплекса к вершине k
         {
             int i, j;
             double[] xk = new double[NP];
@@ -75,19 +75,19 @@ namespace method_Nelder_Mid
                     Nelder_Mid[i, j] = xk[i] + gamma * (Nelder_Mid[i, j] - xk[i]);
             for (i = 0; i < NP; i++) Nelder_Mid[i, k] = xk[i];
         }
-        private void shrinking_expansion(int k, double alpha_beta, int NP)
+        private void shrinking_expansion(int k, double alpha_beta, int NP)      // Сжатие/растяжение симплекса. alpha_beta – коэффициент растяжения/сжатия
         {
             double[] xc = masscenter(k, NP);
             for (int i = 0; i < NP; i++)
                 Nelder_Mid[i, k] = xc[i] + alpha_beta * (Nelder_Mid[i, k] - xc[i]);
         }
-        private double findL(double[] X2, int NP)
+        private double findL(double[] X2, int NP)       // Длина ребра симплекса
         {
             double L = 0;
             for (int i = 0; i < NP; i++) L += X2[i] * X2[i];
             return Math.Sqrt(L);
         }
-        private double minval(double[] F, int N1, ref int imi)
+        private double minval(double[] F, int N1, ref int imi)      // Минимальный элемент массива и его индекс
         {
             double fmi = double.MaxValue, f;
             for (int i = 0; i < N1; i++)
@@ -101,7 +101,7 @@ namespace method_Nelder_Mid
             }
             return fmi;
         }
-        private double maxval(double[] F, int N1, ref int ima)
+        private double maxval(double[] F, int N1, ref int ima)      // Максимальный элемент массива и его индекс
         {
             double fma = double.MinValue, f;
             for (int i = 0; i < N1; i++)
@@ -115,7 +115,7 @@ namespace method_Nelder_Mid
             }
             return fma;
         }
-        private void simplexRestore(int NP)
+        private void simplexRestore(int NP)     // Восстанавление симплекса
         {
             int i, imi = -1, imi2 = -1;
             double fmi, fmi2 = double.MaxValue, f;
@@ -153,6 +153,7 @@ namespace method_Nelder_Mid
             return false;
         }
 
+        //поиск экстремума (минимума) функции F
         public double[] nelMead(ref double[] X, int NP, double L, double L_thres, double cR, double alpha, double beta, double gamma)
         {
             int i, j2, imi = -1, ima = -1;
